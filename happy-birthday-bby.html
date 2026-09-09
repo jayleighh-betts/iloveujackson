@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>happy birthday jackson ♡ — </title>
+<meta name="theme-color" content="#111214" />
+<style>
+:root{
+  --bg:#111214;--paper:#e9e6dc;--ink:#141414;--muted:#9ca39a;--sage:#aeb6a2;--blue:#7d96bf;
+  --red:#9c1f2f;--pink:#f4c8d8;--soft:#f7efe7;--green:#b7d4b0;--shadow:0 18px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:#f5f5f1;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.scene{min-height:100vh;position:relative;overflow:hidden;display:none;padding:28px 18px 56px}
+.scene.active{display:block;animation:fade .45s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.grain:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:radial-gradient(#fff 0.6px,transparent .7px);background-size:7px 7px;mix-blend-mode:screen;z-index:50}
+.wrap{width:min(980px,100%);margin:0 auto;position:relative;z-index:2}
+.center{text-align:center}
+.kicker{font-size:.8rem;letter-spacing:.19em;text-transform:uppercase;color:#b7bbb2}
+.big{font-size:clamp(2.2rem,8vw,6rem);line-height:.92;margin:.25em 0;font-weight:900;letter-spacing:-.045em}
+.sub{color:#c7c7c1;max-width:680px;margin:0 auto;font-size:clamp(1rem,2.5vw,1.25rem);line-height:1.6}
+.btn{border:1px solid #ffffff2b;background:#efeee8;color:#111;padding:14px 20px;border-radius:14px;font-weight:800;box-shadow:0 6px 0 #9e9e98;transition:.15s transform,.15s box-shadow,.15s background;margin:6px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 0 #9e9e98}.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #9e9e98}
+.btn.dark{background:#17181b;color:white;box-shadow:0 6px 0 #08090a}.btn.red{background:#b8293d;color:#fff;box-shadow:0 6px 0 #5e101c}.btn.pink{background:#ffd6e4;box-shadow:0 6px 0 #cf92a8}
+.doodle{font-family:"Comic Sans MS","Bradley Hand",cursive;transform:rotate(-2deg);display:inline-block}
+.paper{background:var(--paper);color:var(--ink);border:1px solid #fff3;border-radius:4px;padding:26px;box-shadow:var(--shadow);position:relative}.paper:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,transparent 35%,rgba(0,0,0,.035));}
+.tape{position:absolute;width:76px;height:22px;background:#d8d0b99c;top:-10px;left:50%;transform:translateX(-50%) rotate(-3deg);backdrop-filter:blur(2px)}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px}
+.card{border:1px solid #ffffff24;background:#1a1c20;padding:18px;border-radius:16px;box-shadow:0 14px 34px #0004}
+.card h3{margin:0 0 8px}.muted{color:#aeb0aa}
+.progress{position:fixed;top:12px;right:12px;z-index:45;background:#0d0e10dc;border:1px solid #ffffff24;border-radius:999px;padding:8px 12px;font-size:.84rem;backdrop-filter:blur(10px)}
+.catcount{position:fixed;top:12px;left:12px;z-index:45;background:#0d0e10dc;border:1px solid #ffffff24;border-radius:999px;padding:8px 12px;font-size:.84rem;backdrop-filter:blur(10px)}
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%) translateY(30px);opacity:0;background:#f0efe9;color:#111;border-radius:12px;padding:12px 16px;font-weight:800;z-index:99;transition:.25s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* lock */
+#lock{align-items:center;justify-content:center;background:radial-gradient(circle at 50% 10%,#24272c 0,#111214 58%)}
+.lockbox{width:min(520px,95vw);border:1px solid #ffffff21;background:#15171bcc;padding:26px;border-radius:24px;box-shadow:var(--shadow);text-align:center;backdrop-filter:blur(14px)}
+.lockbox input{width:100%;padding:15px 16px;background:#0d0e11;color:white;border:1px solid #ffffff2b;border-radius:12px;outline:none;margin:14px 0;text-align:center;font-size:1.08rem}
+.lockpop{position:fixed;z-index:90;background:#f4f1e8;color:#101010;font-weight:900;padding:12px 16px;border-radius:12px;box-shadow:0 14px 40px #0006;animation:pop .35s ease both}@keyframes pop{from{opacity:0;transform:scale(.5) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(var(--r,2deg))}}
+/* notifications */
+.notif{position:fixed;right:18px;top:18px;width:min(390px,calc(100vw - 36px));background:#202225;border:1px solid #ffffff13;border-radius:12px;box-shadow:0 20px 60px #0008;padding:13px;display:flex;gap:11px;z-index:80;transform:translateX(120%);transition:.42s cubic-bezier(.2,.9,.2,1)}
+.notif.show{transform:translateX(0)}.avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#444;flex:none}.notif strong{display:block;margin-bottom:3px}.notif p{margin:0;color:#e5e5e5;line-height:1.35}
+/* door / lobby */
+.doorVisual{width:210px;height:330px;margin:28px auto;background:linear-gradient(90deg,#2d2420,#5a4337 40%,#3b2c25);border:12px solid #211a17;border-radius:5px;position:relative;box-shadow:0 30px 80px #0008}.doorVisual:before{content:"";position:absolute;inset:18px;border:3px solid #231b18aa}.doorVisual:after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:#a17b3c;right:22px;top:52%;box-shadow:0 0 0 4px #2b211d}
+.roomcard{max-width:620px;margin:30px auto;background:#191b1f;border:1px solid #ffffff20;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left}
+.roomcard small{color:#9fa19b}.systemline{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#b8cbb1}
+/* scrapbook */
+.scrap{background:radial-gradient(circle at 20% 10%,#2a2c2b,#171817 60%,#111)}
+.note{background:#eee9d8;color:#171717;padding:18px;border-radius:2px;box-shadow:0 12px 30px #0006;transform:rotate(var(--rot,-1deg));position:relative}.note:before{content:"";position:absolute;top:-9px;left:28%;width:74px;height:19px;background:#d7cba6aa;transform:rotate(3deg)}
+/* evidence */
+.board{background:#402c1f;border:8px solid #20150f;border-radius:10px;padding:28px;box-shadow:inset 0 0 0 2px #ffffff12,0 30px 70px #0007;min-height:560px;position:relative}.pin{position:absolute;width:10px;height:10px;border-radius:50%;background:#b72635;box-shadow:0 2px 3px #0007;top:8px;left:50%}
+.evidence{background:#efe9d7;color:#131313;padding:15px;position:relative;box-shadow:0 12px 24px #0005;transform:rotate(var(--r,-2deg))}
+/* computer */
+.terminal{background:#070909;border:1px solid #63ff8460;color:#7dff9b;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border-radius:10px;padding:22px;box-shadow:0 0 45px #31ff5a18;min-height:420px}.meter{height:13px;border:1px solid currentColor;margin:8px 0 16px;position:relative}.meter span{display:block;height:100%;background:currentColor;width:var(--w)}
+/* notes door5 */
+.foldgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin:26px 0}.fold{min-height:165px;background:#ded6c3;color:#1a1a1a;padding:18px;border:0;box-shadow:0 14px 30px #0005;transform:rotate(var(--rot));text-align:left;transition:.25s}.fold:hover{transform:rotate(0deg) scale(1.02)}.fold.open{background:#f3ecd9}.fold .full{display:none}.fold.open .full{display:block}.fold.open .closed{display:none}
+/* red carpet */
+#d6{background:radial-gradient(circle at 50% 12%,#352026,#111 62%)}.carpet{height:520px;width:min(620px,88vw);margin:12px auto 0;clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);background:linear-gradient(#8f1529,#b51e35);position:relative;box-shadow:0 0 80px #7d0a1d55}.rope{position:absolute;top:60px;bottom:0;width:9px;background:#bb9d54}.rope.left{left:12%}.rope.right{right:12%}.flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:70}.flash.go{animation:flash .24s ease}@keyframes flash{0%{opacity:0}20%{opacity:.95}100%{opacity:0}}
+.paparazzi{position:absolute;left:0;right:0;top:90px;display:flex;justify-content:space-between;align-items:center;font-size:2rem;padding:0 18px;pointer-events:none}.papcat{position:static!important;display:inline-flex!important;align-items:center;justify-content:center;width:auto!important;height:auto!important;padding:0!important;margin:0!important;font-size:2rem!important;line-height:1!important;pointer-events:auto;cursor:pointer;filter:grayscale(1);z-index:5}
+/* official */
+.statusbox{max-width:600px;margin:26px auto;background:#15171a;border:1px solid #ffffff24;border-radius:18px;padding:22px}.perk{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #ffffff10}.perk:last-child{border:0}
+/* analytics */
+.stat{font-size:clamp(2rem,6vw,4rem);font-weight:900}.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}.dash{background:#17191d;border:1px solid #ffffff18;border-radius:16px;padding:18px;min-height:150px;position:relative}.processes{font-family:ui-monospace,monospace;font-size:.85rem;background:#090a0c;padding:14px;border-radius:10px;text-align:left}
+/* escape */
+#d9{background:linear-gradient(#151515,#0a0a0a)}.escapeRoom{height:620px;max-width:900px;margin:auto;position:relative;border:1px solid #ffffff16;background:linear-gradient(#201d1a,#151310);box-shadow:inset 0 -100px 100px #0005,0 30px 80px #0008;overflow:hidden}.obj{position:absolute;background:none;border:0;color:white}.fork{left:18%;bottom:120px;font-size:3rem}.art{left:43%;top:120px;background:#e7e0cd;color:#111;padding:35px 45px;font-size:2.5rem;transform:rotate(-2deg)}.alarm{right:17%;bottom:125px;background:#161616;padding:12px;border-radius:6px;color:#ff3d3d;font-family:monospace}.phone{left:13%;top:190px;font-size:3rem}.ropeObj{right:8%;top:230px;font-size:3rem}.computer{right:31%;bottom:88px;font-size:3rem}.scratched{position:absolute;font-family:monospace;color:#8a8479;font-size:1.6rem;opacity:.8}.s1{left:39%;top:260px}.s2{right:15%;bottom:180px}.s3{left:16%;top:280px}.lockbox{position:absolute!important;right:8%;bottom:55px;width:auto!important;background:#2b2620!important;border:1px solid #ffffff20!important;padding:12px!important;border-radius:8px!important}.inv{position:absolute;left:12px;bottom:12px;background:#050505cc;padding:9px 12px;border:1px solid #ffffff22;border-radius:8px;font-family:monospace}
+/* speed */
+#speed{align-items:center;justify-content:center;padding:0;background:#0b0b0c}.speedDoor{position:absolute;width:180px;height:280px;background:#4f3c31;border:10px solid #221915;display:flex;align-items:flex-start;justify-content:center;padding-top:25px;font-size:2rem;font-weight:900;box-shadow:0 30px 70px #0008}
+/* boss */
+#d19{background:radial-gradient(circle at 50% 45%,#3c080d,#100204 70%)}.bossbox{max-width:760px;margin:0 auto;text-align:center}.cuteBoss{background:#fff2f7;color:#553248;border:4px solid #ffd2e3;border-radius:28px;padding:26px;box-shadow:0 25px 80px #0008;position:relative}.cuteBoss input{padding:14px;border-radius:12px;border:2px solid #f3aac5;text-align:center;background:white;width:min(260px,100%);font-weight:800}.confirmWrap{display:inline-block;position:relative;margin:18px 0 8px}.scribble{position:absolute;font-family:"Comic Sans MS",cursive;font-weight:900;color:#c34b78;white-space:nowrap}.sA{left:-190px;top:-42px;transform:rotate(-10deg)}.sB{right:-130px;top:-20px;transform:rotate(8deg)}.sC{left:-105px;bottom:-35px}.sD{right:-98px;bottom:-35px}.catFace{font-size:7rem;filter:drop-shadow(0 8px 10px #0002)}
+/* final */
+#d20{background:radial-gradient(circle at 50% 15%,#272624,#111 65%)}.memorycloud{position:relative;min-height:510px;margin:30px 0}.memoryItem{position:absolute;background:#ece6d8;color:#151515;padding:10px 14px;box-shadow:0 10px 25px #0004;border-radius:3px;font-weight:800;transform:rotate(var(--r));opacity:0;animation:drop .55s ease forwards}@keyframes drop{from{opacity:0;transform:translateY(-20px) rotate(var(--r)) scale(.8)}to{opacity:1;transform:translateY(0) rotate(var(--r)) scale(1)}}
+.letter{max-width:680px;margin:30px auto;background:#f2ead8;color:#171717;padding:28px;border-radius:4px;box-shadow:var(--shadow);line-height:1.7;text-align:left}.envelope{font-size:4rem}.bonus{background:linear-gradient(#ffe9f2,#dcecff);color:#39333c}.catRain{position:fixed;top:-50px;font-size:2rem;animation:fall linear forwards;z-index:4}@keyframes fall{to{transform:translateY(115vh) rotate(360deg)}}
+@media(max-width:640px){.scene{padding-top:68px}.progress,.catcount{font-size:.74rem}.escapeRoom{height:570px}.art{left:34%;font-size:1.6rem;padding:25px}.computer{right:25%}.scribble{font-size:.76rem}.sA{left:-110px}.sB{right:-82px}.sC{left:-52px}.sD{right:-58px}}
+
+/* ===== immersive game pass ===== */
+body{overflow:hidden}
+.scene{height:100vh;min-height:100vh;padding:22px 18px;align-items:center;justify-content:center}
+.scene.active{display:flex}
+#lock.active,#speed.active{display:flex}
+.scene>.wrap{max-height:calc(100vh - 54px);overflow:auto;padding:8px 10px 34px;scrollbar-width:thin;scrollbar-color:#ffffff32 transparent}
+.scene>.wrap::-webkit-scrollbar{width:7px}.scene>.wrap::-webkit-scrollbar-thumb{background:#ffffff30;border-radius:10px}
+.scene:not(#lock):not(#intro):not(#speed):not(#hallway)::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.5),transparent 22%,transparent 78%,rgba(0,0,0,.5)),linear-gradient(0deg,rgba(0,0,0,.55),transparent 42%);z-index:0}
+.scene:not(#lock):not(#intro):not(#speed):not(#hallway)::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px 30px #000;z-index:1}
+.wrap{z-index:3}
+#d1{background:radial-gradient(circle at 50% 35%,#26303a 0,#13171c 52%,#08090b 100%)}
+#d2{background:radial-gradient(circle at 50% 22%,#3a342f 0,#171513 55%,#080807 100%)}
+#d3{background:radial-gradient(circle at 50% 30%,#37291f 0,#17100d 60%,#080605 100%)}
+#d4{background:radial-gradient(circle at 50% 40%,#102017 0,#080b09 57%,#030403 100%)}
+#d5{background:radial-gradient(circle at 50% 28%,#30302d 0,#161716 58%,#090a09 100%)}
+#d7{background:radial-gradient(circle at 50% 30%,#29262c 0,#141316 58%,#080809 100%)}
+#d8{background:radial-gradient(circle at 50% 30%,#19212d 0,#0e1218 58%,#07080b 100%)}
+#d20{background:radial-gradient(circle at 50% 20%,#302b29 0,#171514 58%,#090808 100%)}
+/* floating dust gives rooms some life */
+.ambientDust{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}.ambientDust i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:.12;animation:dustFloat var(--t) linear infinite;left:var(--x);top:110%}@keyframes dustFloat{to{transform:translate(var(--dx),-125vh) scale(.3);opacity:0}}
+/* first-person hallway */
+#hallway{padding:0;background:#050607;perspective:900px;cursor:crosshair}
+.hall{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#0c0f12 0 56%,#090909 56% 100%)}
+.hall .ceiling{position:absolute;left:12%;right:12%;top:0;height:44%;background:linear-gradient(#15191c,#08090a);clip-path:polygon(0 0,100% 0,73% 100%,27% 100%)}
+.hall .floor{position:absolute;left:10%;right:10%;bottom:0;height:48%;background:repeating-linear-gradient(90deg,transparent 0 11.5%,#ffffff08 12%,transparent 12.4%),linear-gradient(#171717,#050505);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%)}
+.hall .wallL,.hall .wallR{position:absolute;top:0;bottom:0;width:34%;background:linear-gradient(90deg,#17191b,#090a0b)}
+.hall .wallL{left:0;clip-path:polygon(0 0,100% 21%,100% 79%,0 100%)}.hall .wallR{right:0;transform:scaleX(-1);clip-path:polygon(0 0,100% 21%,100% 79%,0 100%)}
+.hallLight{position:absolute;left:50%;top:7%;width:180px;height:16px;transform:translateX(-50%);background:#e4e6dd;box-shadow:0 0 35px #fff9;opacity:.65}
+.hallDoor{position:absolute;left:50%;top:22%;width:170px;height:300px;transform:translateX(-50%) scale(var(--doorScale,1));transform-origin:50% 65%;transition:.55s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 28px 30px #000b);perspective:650px}
+.hallDoorFrame{position:absolute;inset:-12px;background:#17120f;border:4px solid #2c211b;border-radius:4px}
+.hallDoorLeaf{position:absolute;inset:0;background:linear-gradient(90deg,#2c211c,#584037 45%,#30231e);border:2px solid #211915;transform-origin:left center;transition:.65s cubic-bezier(.3,.7,.1,1);transform-style:preserve-3d}
+.hallDoorLeaf::before{content:"";position:absolute;inset:18px;border:3px solid #241b17aa;box-shadow:inset 0 0 20px #0005}
+.hallDoorLeaf::after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:#b38d4e;right:18px;top:52%;box-shadow:0 0 0 4px #201814}
+.hallDoorNum{position:absolute;left:50%;top:34px;transform:translateX(-50%);font-family:ui-monospace,monospace;font-weight:900;letter-spacing:.18em;background:#161616;color:#ddd;padding:6px 10px;border:1px solid #ffffff19;z-index:3}
+.hall.open .hallDoorLeaf{transform:rotateY(-102deg)}
+.hall.step1{--doorScale:1.18}.hall.step2{--doorScale:1.52}.hall.step3{--doorScale:2.05}
+.hallHUD{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);z-index:6;text-align:center;width:min(92vw,620px);text-shadow:0 2px 8px #000}.hallHUD .walkHint{font-size:.8rem;letter-spacing:.18em;color:#d8d8d2;margin-top:8px}.hallHUD .keycap{display:inline-grid;place-items:center;width:34px;height:34px;border:1px solid #ffffff42;border-bottom-width:4px;border-radius:7px;background:#121315;margin:0 5px;font-weight:900}
+.hallName{font-size:clamp(1.2rem,3vw,2rem);font-weight:900}.hallStepDots{margin-top:10px}.hallStepDots span{display:inline-block;width:7px;height:7px;border:1px solid #aaa;border-radius:50%;margin:0 5px}.hallStepDots span.on{background:#eee}
+.hallRush{animation:hallRush .28s ease}@keyframes hallRush{50%{filter:blur(2px);transform:scale(1.015)}}
+/* entrance animation for rooms */
+.scene.roomArrive .wrap{animation:roomArrive .7s cubic-bezier(.16,.75,.2,1) both}@keyframes roomArrive{from{opacity:0;transform:translateY(22px) scale(.975);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+/* intro notifications: centered phone-like stack, slower */
+#intro{background:radial-gradient(circle at 50% 35%,#1d232d,#0d0f13 60%,#060708)}
+.introPhone{width:min(430px,92vw);height:min(640px,80vh);margin:auto;border-radius:34px;background:#111317;border:1px solid #ffffff1c;box-shadow:0 40px 100px #000b;position:relative;overflow:hidden;padding:24px 16px}.introPhone:before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:90px;height:18px;border-radius:20px;background:#050506}
+.introFeed{position:absolute;left:14px;right:14px;bottom:20px;display:flex;flex-direction:column;gap:10px}.introMsg{background:#24272c;border:1px solid #ffffff11;border-radius:15px;padding:12px;display:flex;gap:10px;text-align:left;animation:msgIn .38s ease both;box-shadow:0 10px 28px #0005}.introMsg p{margin:0;line-height:1.42}.introMsg strong{display:block;margin-bottom:2px}.introMsg .avatar{width:38px;height:38px}@keyframes msgIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.readingBar{position:absolute;left:0;bottom:0;height:3px;background:#7c91b7;animation:reading linear forwards}
+@keyframes reading{from{width:0}to{width:100%}}
+/* Red carpet actually advances */
+#d6{overflow:hidden}.carpetStageCam{transition:transform .8s cubic-bezier(.2,.8,.2,1)}.carpetStageCam.walk1{transform:scale(1.12) translateY(-24px)}.carpetStageCam.walk2{transform:scale(1.26) translateY(-52px)}.carpetStageCam.walk3{transform:scale(1.42) translateY(-82px)}
+.papBubble{position:fixed;background:#f3eee6;color:#111;padding:9px 12px;border-radius:13px;font-weight:900;z-index:66;box-shadow:0 10px 30px #0008;animation:papPop .5s ease both}@keyframes papPop{from{opacity:0;transform:scale(.5) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(var(--r,2deg))}}
+/* elevator / speedrun */
+#speed{padding:0;background:#050505;align-items:center;justify-content:center}
+.elevatorCab{width:min(760px,94vw);height:min(720px,92vh);position:relative;background:linear-gradient(90deg,#202224,#383a3d 12%,#242628 50%,#383a3d 88%,#202224);border:8px solid #0d0e0f;box-shadow:0 50px 120px #000;overflow:hidden}.elevTop{position:absolute;left:0;right:0;top:0;height:90px;background:#171819;border-bottom:4px solid #090909}.floorDisplay{position:absolute;left:50%;top:20px;transform:translateX(-50%);background:#080808;color:#ff4d42;font-family:ui-monospace,monospace;font-size:2rem;padding:7px 18px;border:2px solid #3c3c3c;min-width:90px;text-align:center;text-shadow:0 0 10px #f44}.elevWindow{position:absolute;left:12%;right:12%;top:110px;bottom:95px;background:#080909;border:10px solid #151515;overflow:hidden;perspective:700px}.shaftDoor{position:absolute;left:50%;width:180px;height:270px;transform:translateX(-50%);background:linear-gradient(90deg,#29211d,#5a4035,#2b211d);border:9px solid #17110f;box-shadow:0 20px 50px #000}.elevDoors{position:absolute;inset:0;pointer-events:none;z-index:8}.elevDoors:before,.elevDoors:after{content:"";position:absolute;top:0;bottom:0;width:50.2%;background:linear-gradient(90deg,#3a3c3d,#5a5c5f 50%,#2f3133);transition:.75s ease}.elevDoors:before{left:0}.elevDoors:after{right:0}.elevDoors.open:before{transform:translateX(-100%)}.elevDoors.open:after{transform:translateX(100%)}
+.elevCaption{position:absolute;left:0;right:0;bottom:24px;text-align:center;font-weight:900;letter-spacing:.08em}.elevShake{animation:elevShake .12s infinite}@keyframes elevShake{0%,100%{transform:translate(0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}}
+/* final boss readability */
+.cuteBoss{width:min(760px,94vw);margin:auto;background:#fff2f7;color:#191419;border:4px solid #f0a9c4;border-radius:28px;padding:30px 24px 24px;box-shadow:0 30px 90px #0008;text-align:center;position:relative;overflow:visible}
+.cuteBoss input{width:min(280px,80%);padding:14px;border:2px solid #dc9ab5;border-radius:14px;text-align:center;font-size:1.2rem;background:white;color:#222;outline:none}
+.confirmWrap{position:relative;min-height:210px;margin:18px auto 0;width:min(620px,100%);display:grid;place-items:center}
+.confirmWrap #confirmBirth{font-size:1.25rem;padding:16px 34px;z-index:5;position:relative}
+.scribble{position:absolute;font-family:"Comic Sans MS","Bradley Hand",cursive;font-weight:900;color:#a52d68;white-space:nowrap;z-index:2;transform:rotate(var(--rr,0deg));text-shadow:0 1px #fff}
+.sA{left:3%;top:3%;--rr:-7deg}.sB{right:5%;top:15%;--rr:8deg}.sC{left:9%;bottom:12%;--rr:5deg}.sD{right:4%;bottom:2%;--rr:-5deg}
+#bossMsg{margin-top:8px;min-height:72px;line-height:1.45}
+@media(max-width:620px){.scribble{font-size:.78rem}.sA{left:0;top:0}.sB{right:0;top:28px}.sC{left:0;bottom:18px}.sD{right:0;bottom:0}.confirmWrap{min-height:230px}.board{min-height:670px}.evidence{font-size:.88rem}.hallDoor{top:24%;width:145px;height:260px}}
+
+
+/* ===== IMMERSIVE BUILD 5 — TRANSITION FIX OVERRIDES ===== */
+#versionStamp{position:fixed;right:10px;bottom:8px;z-index:120;font:700 10px ui-monospace,monospace;letter-spacing:.12em;color:#ffffff55;pointer-events:none}
+#transitionCurtain{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:110;transition:opacity .42s ease}
+#transitionCurtain.on{opacity:1}
+/* hallway is now a genuine approach sequence, not three scale clicks */
+.hall{--walk:0;transform:translateZ(0);transition:filter .18s ease}
+.hall .floor{background:repeating-linear-gradient(90deg,transparent 0 11.5%,#ffffff0a 12%,transparent 12.4%),repeating-linear-gradient(0deg,#171717 0 58px,#0a0a0a 59px 62px);background-position:0 calc(var(--walk)*34px);transition:background-position .22s ease}
+.hall .wallL,.hall .wallR{filter:brightness(calc(1 + var(--walk)*.025))}
+.hallDoor{transform:translateX(-50%) scale(calc(1 + var(--walk)*.12));transition:transform .34s cubic-bezier(.18,.82,.2,1),filter .34s}
+.hall.walkPulse{animation:headbob .26s ease}
+@keyframes headbob{0%{transform:translateY(0)}45%{transform:translateY(7px)}100%{transform:translateY(0)}}
+.hall.open .hallDoor{transform:translateX(-50%) scale(2.05)}
+.hall.open .hallDoorLeaf{transform:rotateY(-108deg)}
+.hall.entering .hallDoor{animation:enterDoor .8s cubic-bezier(.18,.8,.2,1) forwards}
+@keyframes enterDoor{to{transform:translateX(-50%) scale(7);filter:blur(5px)}}
+.hallHUD{bottom:5%}.walkHint{background:#0009;display:inline-block;padding:9px 14px;border-radius:999px;border:1px solid #ffffff20}.hallStepDots span{width:8px;height:8px}
+/* slower reader-controlled Discord intro */
+#intro{padding:0!important;background:#0d1117!important}
+.discordDesk{position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,#263347 0,#111821 42%,#07090d 100%);overflow:hidden}
+.discordDesk:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 55%,#ffffff05 56%,transparent 57%);opacity:.35}
+.deskWallpaper{position:absolute;left:7vw;top:11vh;text-align:left;color:#ffffffcc}.deskClock{font-size:clamp(2rem,7vw,5.5rem);font-weight:900;letter-spacing:-.05em}.deskHint{max-width:440px;margin-top:10px;color:#ffffff70;line-height:1.5}
+.notifStage{position:absolute;right:5vw;top:7vh;width:min(430px,90vw);display:flex;flex-direction:column;align-items:stretch;gap:14px;z-index:5}
+.discordToast{background:#202225;border:1px solid #ffffff18;border-radius:14px;box-shadow:0 24px 70px #000a;padding:15px;display:grid;grid-template-columns:46px 1fr;gap:12px;text-align:left;animation:toastSlide .5s cubic-bezier(.2,.9,.2,1)}
+@keyframes toastSlide{from{opacity:0;transform:translateX(60px) scale(.97)}to{opacity:1;transform:none}}
+.discordToast p{margin:2px 0 0;line-height:1.5;font-size:1.02rem}.discordToast .avatar{width:46px;height:46px}.notifControls{grid-column:1/-1;display:flex;justify-content:flex-end;margin-top:6px}.notifControls button{font-size:.86rem;padding:10px 14px}
+.introArchive{position:absolute;left:5vw;bottom:5vh;width:min(560px,55vw);max-height:38vh;overflow:hidden;display:flex;flex-direction:column;gap:7px;opacity:.55}.archiveLine{font-size:.82rem;background:#0005;border-left:2px solid #7d96bf;padding:7px 10px;text-align:left}
+@media(max-width:800px){.deskWallpaper{left:5vw;top:6vh}.notifStage{top:28vh;right:5vw;left:5vw;width:auto}.introArchive{display:none}}
+/* boss confirm doodles are in dedicated rows so they physically cannot overlap */
+.confirmStage{width:min(650px,100%);margin:18px auto 0;display:flex;flex-direction:column;align-items:center;gap:12px;overflow:visible}
+.confirmRow{width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;min-height:92px}.confirmRow #confirmBirth{font-size:1.3rem;padding:18px 38px;min-width:150px}.topDoodle,.bottomDoodle{position:static!important;white-space:normal!important;text-align:center;max-width:100%;font-size:1.05rem}.sideDoodle{position:static!important;white-space:normal!important;line-height:1.15;font-size:.95rem}.leftDoodle{text-align:right;transform:rotate(-8deg)}.rightDoodle{text-align:left;transform:rotate(8deg)}
+@media(max-width:620px){.confirmRow{grid-template-columns:1fr;gap:10px}.sideDoodle{text-align:center!important;transform:none!important}.confirmRow #confirmBirth{order:-1}.topDoodle,.bottomDoodle,.sideDoodle{font-size:.82rem}.cuteBoss{padding:22px 14px}.catFace{font-size:5rem}}
+/* remove accidental old absolute scribble rules from taking effect */
+.confirmStage .scribble{z-index:auto}
+
+
+/* persistent soundtrack player — build 6 */
+#musicDock{position:fixed;right:14px;bottom:14px;z-index:120;width:min(390px,calc(100vw - 28px));font-size:.9rem;display:none}
+#musicDock.visible{display:block}
+.musicMini{background:rgba(10,11,13,.92);border:1px solid #ffffff26;border-radius:18px;box-shadow:0 18px 50px #0009;backdrop-filter:blur(14px);overflow:hidden}
+.musicHead{display:flex;align-items:center;gap:11px;padding:10px 12px}
+.musicDisc{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#0b0c0e 0 18%,#d7d5cf 19% 23%,#25272c 24% 50%,#0a0b0d 51%);box-shadow:inset 0 0 0 1px #fff2;flex:0 0 auto}
+.musicDisc.spin{animation:recordSpin 3.5s linear infinite}@keyframes recordSpin{to{transform:rotate(360deg)}}
+.musicMeta{min-width:0;flex:1}.musicMeta small{display:block;color:#8f958e;letter-spacing:.12em;font-size:.62rem}.musicMeta strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.musicMeta span{color:#b6bab3;font-size:.78rem}
+.musicIconBtn{border:1px solid #ffffff22;background:#1c1e22;color:#fff;width:34px;height:34px;border-radius:10px;font-weight:900}
+#musicDrawer{border-top:1px solid #ffffff16;padding:10px;display:none;background:#111317}#musicDrawer.open{display:block}
+.musicPickerList{display:grid;gap:7px}.musicPick{display:flex;align-items:center;justify-content:space-between;text-align:left;border:1px solid #ffffff1d;background:#191b20;color:#fff;border-radius:11px;padding:9px 11px}.musicPick:hover{background:#23262c}.musicPick em{font-style:normal;color:#9da29a;font-size:.75rem}
+#spotifyFrameWrap{margin-top:9px;border-radius:12px;overflow:hidden;background:#0d0e10;min-height:0}#spotifyFrame{display:block;width:100%;height:152px;border:0}
+.musicNote{font-size:.7rem;color:#858b84;line-height:1.35;margin:7px 2px 0}
+#musicSelect{align-items:center;justify-content:center;background:radial-gradient(circle at 50% 20%,#22262c 0,#111214 62%)}
+.soundtrackPanel{width:min(820px,100%);margin:5vh auto;text-align:center}.soundtrackPanel .big{font-size:clamp(2.5rem,8vw,5rem)}
+.soundChoices{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 18px}.soundCard{position:relative;min-height:180px;border:1px solid #ffffff22;background:linear-gradient(160deg,#202329,#111317);border-radius:20px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;box-shadow:0 20px 55px #0007;transition:.2s}.soundCard:hover{transform:translateY(-5px);border-color:#ffffff55}.soundCard .discBig{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle,#101114 0 15%,#d5d2ca 16% 20%,#26282d 21% 52%,#090a0c 53%);box-shadow:0 12px 28px #0008}.soundCard b{font-size:1rem}.soundCard span{color:#aeb2ac;font-size:.82rem}.soundCard .chooseMark{position:absolute;right:10px;top:9px;font-family:"Comic Sans MS","Bradley Hand",cursive;transform:rotate(5deg);color:#c9cec4;font-size:.74rem}
+@media(max-width:720px){.soundChoices{grid-template-columns:1fr}.soundCard{min-height:135px;flex-direction:row;text-align:left}.soundCard .discBig{width:58px;height:58px;flex:0 0 auto}#musicDock{right:8px;bottom:8px;width:calc(100vw - 16px)}}
+
+</style>
+</head>
+<body class="grain">
+<div class="catcount hidden" id="catcount">🐈 0/5</div>
+<div class="progress hidden" id="progress">DOOR 00</div>
+<div class="toast" id="toast"></div>
+<div class="flash" id="flash"></div>
+<div class="ambientDust" id="ambientDust"></div>
+<div id="transitionCurtain"></div>
+<div id="versionStamp">IMMERSIVE BUILD 7 — PAPARAZZI CAT FIX</div>
+
+<div id="musicDock" aria-label="soundtrack player">
+  <div class="musicMini">
+    <div class="musicHead">
+      <div class="musicDisc" id="musicDisc"></div>
+      <div class="musicMeta"><small>♫ SOUNDTRACK</small><strong id="musicTitle">choose a song</strong><span id="musicArtist">nothing playing</span></div>
+      <button class="musicIconBtn" id="musicToggle" title="Open soundtrack menu">♫</button>
+    </div>
+    <div id="musicDrawer">
+      <div class="musicPickerList">
+        <button class="musicPick" data-song="lovers"><span>Lovers Rock<br><em>TV Girl</em></span><b>PLAY</b></button>
+        <button class="musicPick" data-song="iloveyou"><span>I Love You<br><em>Fontaines D.C.</em></span><b>PLAY</b></button>
+        <button class="musicPick" data-song="star"><span>Star Shopping<br><em>Lil Peep</em></span><b>PLAY</b></button>
+        <button class="musicPick" data-song="none"><span>No music<br><em>quiet mode</em></span><b>×</b></button>
+      </div>
+      <div id="spotifyFrameWrap"></div>
+      <div class="musicNote">Playback uses Spotify's official embedded player, so he may need to press play inside it or sign in for full playback.</div>
+    </div>
+  </div>
+</div>
+
+<section class="scene" id="hallway">
+  <div class="hall" id="hall">
+    <div class="ceiling"></div><div class="floor"></div><div class="wallL"></div><div class="wallR"></div><div class="hallLight"></div>
+    <div class="hallDoor" id="hallDoor"><div class="hallDoorFrame"></div><div class="hallDoorLeaf"><div class="hallDoorNum" id="hallDoorNum">01</div></div></div>
+    <div class="hallHUD"><div class="hallName" id="hallName">DOOR 01</div><div class="walkHint"><span class="keycap">W</span> / ↑ / CLICK TO WALK</div><div class="hallStepDots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+  </div>
+</section>
+
+
+<section class="scene active" id="lock">
+  <div class="lockbox">
+    <div class="kicker">birthday access portal</div>
+    <div class="big" style="font-size:clamp(2.2rem,8vw,4.6rem)">LOCKED 🔒</div>
+    <p class="sub">enter the password.</p>
+    <input id="password" type="password" autocomplete="off" placeholder="password" aria-label="password" />
+    <button class="btn" id="unlockBtn">UNLOCK</button>
+  </div>
+</section>
+
+
+<section class="scene" id="musicSelect">
+  <div class="wrap soundtrackPanel">
+    <div class="kicker">before we start...</div>
+    <h1 class="big">choose your soundtrack.</h1>
+    <p class="sub">you'll be here a while. pick one now — you can change it whenever you want from the music player in the corner.</p>
+    <div class="soundChoices">
+      <button class="soundCard" data-song="lovers"><span class="chooseMark">good choice btw</span><div class="discBig"></div><div><b>Lovers Rock</b><br><span>TV Girl</span></div></button>
+      <button class="soundCard" data-song="iloveyou"><span class="chooseMark">dramatic.</span><div class="discBig"></div><div><b>I Love You</b><br><span>Fontaines D.C.</span></div></button>
+      <button class="soundCard" data-song="star"><span class="chooseMark">obviously.</span><div class="discBig"></div><div><b>Star Shopping</b><br><span>Lil Peep</span></div></button>
+    </div>
+    <button class="btn dark" id="noMusicStart">NO MUSIC / DECIDE LATER</button>
+    <p class="doodle" style="display:block;margin-top:18px">♫ the soundtrack follows you through the doors ♫</p>
+  </div>
+</section>
+
+<section class="scene" id="intro">
+  <div class="discordDesk">
+    <div class="deskWallpaper"><div class="deskClock">birthday.exe</div><div class="deskHint">notifications will wait for you — click continue when you've read each one.</div></div>
+    <div class="notifStage" id="notifStage">
+      <button class="btn dark" id="introStart">TURN NOTIFICATIONS ON</button>
+    </div>
+    <div class="introArchive" id="introArchive"></div>
+  </div>
+</section>
+
+<section class="scene scrap" id="d1">
+ <div class="wrap center">
+  <div class="kicker">DOOR 01</div><h1 class="big">the lobby.</h1>
+  <p class="sub">possibly the most consequential button i've ever pressed.</p>
+  <div class="roomcard">
+    <div><strong>looking for a girl to play Doors with</strong><br><small>2/4 players</small></div>
+    <button class="btn dark" id="joinBtn">JOIN</button>
+    <button class="obj" data-cat="1" style="right:6px;bottom:-13px;font-size:1.4rem" aria-label="hidden cat">🐈</button>
+  </div>
+  <div id="originText" class="hidden">
+    <p class="systemline">JAYE HAS JOINED</p>
+    <div class="paper" style="max-width:650px;margin:24px auto;text-align:left"><div class="tape"></div>
+      <p>all i wanted was someone to play doors with.</p>
+      <p><b>instead i got stuck with you.</b></p>
+      <p class="doodle">0/10 matchmaking system. accidentally found boyfriend.</p>
+      <hr><p>❌ play a normal game of Doors<br>✅ acquire random New Zealander<br>✅ somehow keep talking to him<br>✅ fall for random New Zealander</p>
+      <p class="doodle">i'd press join again. ♡</p>
+    </div>
+    <button class="btn" data-next="d2">DOOR 01 COMPLETE ✓ &nbsp; →</button>
+  </div>
+ </div>
+</section>
+
+<section class="scene scrap" id="d2"><div class="wrap center">
+ <div class="kicker">DOOR 02</div><h1 class="big">critical mistake.</h1><p class="sub">you showed me what you looked like.</p>
+ <div class="paper" style="max-width:700px;margin:28px auto;text-align:left"><div class="tape"></div>
+  <div class="kicker" style="color:#333">CASE FILE #002</div><h2>SUBJECT: JACKSON</h2>
+  <p><b>status update:</b> funny guy from roblox → <b>oh no. he's attractive.</b></p>
+  <p class="doodle">well that's inconvenient.</p>
+  <hr><p><b>EVIDENCE REQUIRED:</b> photographic proof of fork possession</p>
+  <button class="btn dark" id="forkReveal">🍴 INSPECT THE FORK INCIDENT</button>
+  <div id="forkText" class="hidden"><p><b>THE FORK INCIDENT</b></p><p>“can you send a picture of you holding a fork” somehow became an inside joke and i refuse to explain ourselves.</p><p class="doodle">anyway send fork pic</p></div>
+ </div>
+ <p class="sub">jokes aside, i think this was when things changed for me. you weren't just the funny guy i played doors with anymore.</p>
+ <button class="btn" data-next="d3">OPEN DOOR 03 →</button>
+</div></section>
+
+<section class="scene" id="d3"><div class="wrap center">
+ <div class="kicker">DOOR 03</div><h1 class="big">CASE #003</h1><p class="sub">WERE THEY ACTUALLY “JUST FRIENDS”?</p>
+ <div class="board" style="margin-top:30px">
+   <div class="evidence" style="position:absolute;left:5%;top:8%;width:40%;--r:-4deg"><span class="pin"></span><b>EVIDENCE A</b><p>cute TikToks like “me and her here” over sunsets.</p><p class="doodle">ah yes. completely platonic.</p></div>
+   <div class="evidence" style="position:absolute;right:6%;top:13%;width:38%;--r:3deg"><span class="pin"></span><b>EVIDENCE B</b><p>constant messages. constant calls. suspicious levels of enthusiasm.</p><p class="doodle">VERY NORMAL 👍</p></div>
+   <div class="evidence" style="position:absolute;left:13%;bottom:10%;width:36%;--r:2deg"><span class="pin"></span><b>LIKELIHOOD THEY'RE “JUST FRIENDS”</b><p class="stat" style="font-size:2rem">0.00001%</p></div>
+   <div class="evidence" style="position:absolute;right:10%;bottom:10%;width:34%;--r:-3deg"><span class="pin"></span><b>VERDICT</b><p class="big" style="font-size:2.5rem">be serious.</p></div>
+   <button class="obj" data-cat="2" style="left:50%;top:49%;font-size:1.5rem" aria-label="hidden cat">🐈</button>
+ </div>
+ <p class="sub" style="margin-top:22px">secretly though, i loved getting these. every time my phone went off i hoped it was you.</p>
+ <button class="btn" data-next="d4">CASE CLOSED. →</button>
+</div></section>
+
+<section class="scene" id="d4"><div class="wrap">
+ <div class="terminal">
+  <div>JACKSON.EXE</div><br><div>LOADING SUBJECT...</div><div>[████████████████████] 100%</div><br>
+  <div>NAME: Jackson</div><div>CLASS: boyfriend</div><div>LOCATION: unnecessarily far away</div><div>THREAT LEVEL: moderate</div><div>CURRENT STATUS: 20 years old. devastating.</div><br>
+  <div>ARTISTIC ABILITY</div><div class="meter"><span style="--w:100%"></span></div><div>gartic phone drawings: CONCERNING</div><br>
+  <div>SPELLING ABILITY</div><div class="meter"><span style="--w:10%"></span></div><div>spellcheck fighting for its life</div><br>
+  <div>LAUGH</div><div class="meter"><span style="--w:100%"></span></div><div>jaye likes this one :) ♡</div><br>
+  <div>VOICE STABILITY</div><div class="meter"><span style="--w:31%"></span></div>
+  <button class="btn" id="voiceTest">RUN VOICE TEST</button><span id="voiceResult"></span>
+  <button class="obj" data-cat="3" style="right:18px;top:18px;font-size:1.4rem" aria-label="hidden cat">🐈</button>
+ </div>
+ <div class="center"><button class="btn" data-next="d5">DOOR 04 COMPLETE ✓ →</button></div>
+</div></section>
+
+<section class="scene scrap" id="d5"><div class="wrap center">
+ <div class="kicker">DOOR 05</div><h1 class="big">things you probably don't know i remember.</h1><p class="sub">click them.</p>
+ <div class="foldgrid" id="foldgrid">
+  <button class="fold" style="--rot:-3deg"><div class="closed"><b>01 — 🎧</b><p>open me</p></div><div class="full"><b>Pierce the Veil</b><p>when i recommended you pierce the veil and you actually immediately listened to them. you probably didn't think anything of it, but i remember being so happy you cared enough to listen just because i liked them.</p></div></button>
+  <button class="fold" style="--rot:2deg"><div class="closed"><b>02 — 🎬</b><p>open me</p></div><div class="full"><b>the Trainspotting betrayal</b><p>when you PROMISED you'd watch trainspotting.</p><p class="big" style="font-size:2rem">YOU DIDN'T.</p><p>until a whole week later when we watched it on call together.</p><p class="doodle">promise fulfilled: technically ✓</p></div></button>
+  <button class="fold" style="--rot:-1deg"><div class="closed"><b>03 — 📞</b><p>open me</p></div><div class="full"><b>our first call alone</b><p>it was awkward for like five minutes and then somehow it just wasn't. i remember how quickly being alone with you started feeling completely normal.</p></div></button>
+  <button class="fold" style="--rot:3deg"><div class="closed"><b>04 — 📡</b><p>open me</p></div><div class="full"><b>NOVEMBER OCTOBER</b><p>the objectively correct phonetic-alphabet translation of “NO”.</p><p class="doodle">that's not even how that works.</p></div></button>
+  <button class="fold" style="--rot:-2deg"><div class="closed"><b>05 — 🎨</b><p>open me</p></div><div class="full"><div class="big" style="font-size:2.5rem">AAHT</div><p>the way you say “art” 😭 and how after i mentioned ONCE that i liked drawing, you kept asking to see my aaht.</p><p class="doodle">still think your voice is cute though unfortunately.</p></div></button>
+ </div>
+ <div id="rememberEnd" class="hidden"><p class="sub">you probably don't remember half of these.<br><b style="color:white">i do.</b><br>that's kind of the point.</p><button class="btn" data-next="d6">DOOR 05 COMPLETE ✓ →</button></div>
+</div></section>
+
+<section class="scene" id="d6"><div class="wrap center">
+ <div class="kicker">DOOR 06</div><h1 class="big">THE RED CARPET.</h1><p class="sub">GET READY.</p>
+ <div id="countdown" class="big" style="margin-top:30px">3</div>
+ <div id="carpetStage" class="hidden carpetStageCam">
+   <div class="carpet"><div class="rope left"></div><div class="rope right"></div><div class="paparazzi"><span>📸</span><span>📷</span><button class="obj papcat" data-cat="4">🐈📷</button><span>📸</span><span>📷</span></div></div>
+   <h2>JACKSON & JAYE HAVE ARRIVED.</h2>
+   <div id="redWords" class="sub">JACKSON! OVER HERE! &nbsp; • &nbsp; LOOK AT THE CAMERA! &nbsp; • &nbsp; ONE MORE!</div>
+   <button class="btn red" id="walkCarpet">WALK THE RED CARPET</button>
+   <div id="carpetActions"></div>
+ </div>
+</div></section>
+
+<section class="scene scrap" id="d7"><div class="wrap center">
+ <div class="kicker">DOOR 07</div><h1 class="big">01.09.2026</h1><p class="sub">oh. this day.</p>
+ <div class="statusbox"><div class="kicker">relationship status</div><h2>Jaye + Jackson</h2><div id="officialLoading">pending...<br>pending...<br>pending...</div><div id="officialYes" class="hidden"><div class="big" style="font-size:3rem">OFFICIAL ✓</div>
+ <div class="perk">✓ unlimited discord calls</div><div class="perk">✓ unsolicited tiktok spam</div><div class="perk">✓ being bullied by jaye</div><div class="perk">✓ mandatory fork photography</div><div class="perk">✓ outrageous timezone inconvenience</div><div class="perk">✓ one girlfriend</div><p><b>SUBSCRIPTION:</b> LIFETIME<br><span class="muted">(no cancellation button)</span></p></div></div>
+ <div id="officialSweet" class="hidden"><p class="sub">i remember how happy i was after this. like embarrassingly happy. i finally got to call you my boyfriend.</p><p class="doodle">and now i get to make stupid websites for your birthday. look how far we've fallen.</p><button class="btn" data-next="d8">DOOR 07 COMPLETE ✓ →</button></div>
+</div></section>
+
+<section class="scene" id="d8"><div class="wrap center">
+ <div class="kicker">DOOR 08</div><h1 class="big">J + J ANALYTICS</h1><p class="sub">retrieving extremely important statistics...</p>
+ <div class="dashboard" style="margin-top:26px">
+  <div class="dash"><div class="kicker">time since jaye joined the lobby</div><div class="stat" id="metDays">—</div><div class="muted">since 01.08.2026</div></div>
+  <div class="dash"><div class="kicker">time since official</div><div class="stat" id="officialDays">—</div><div class="muted">since 01.09.2026</div></div>
+  <div class="dash"><div class="kicker">relationship speedrun</div><div class="stat">1 MONTH</div><div class="muted">01.08 → 01.09 &nbsp; any%</div></div>
+  <div class="dash"><div class="kicker">tiktoks sent</div><div class="stat" id="tiktoks">0</div><div class="muted" id="tiknote">counting...</div></div>
+  <div class="dash"><div class="kicker">alarm clock incidents</div><div class="stat">???</div><button class="btn dark" id="wakeBtn">WAKE JACKSON UP</button><div id="wakeText" class="muted"></div></div>
+  <div class="dash"><div class="kicker">doors statistics</div><p>Doors played together: <b>many</b><br>entities screamed at: <b>several</b><br>times Jackson helped Jaye: <b>classified</b><br>library enjoyment: <b>0%</b><br>Jackson saying “fuck this game”: <b>statistically significant</b></p></div>
+  <div class="dash"><div class="kicker">spelling accuracy</div><div class="stat">N/A</div><div class="muted">insufficient evidence of spelling ability</div></div>
+  <div class="dash"><div class="kicker">most important statistic</div><div>DAYS I'VE REGRETTED MEETING YOU</div><div class="stat">0</div><div class="muted">ew. next door.</div></div>
+  <div class="dash"><div class="kicker">system processes: 47</div><button class="btn dark" id="procBtn">VIEW</button><div class="processes hidden" id="procList">discord.exe<br>doors.exe<br>jackson_spelling_recovery.exe<br>tiktok_spam.exe<br>alarm_clock.exe<br><button class="btn dark" data-cat="5" style="padding:6px 8px;margin:6px 0">cat.exe</button></div></div>
+ </div>
+ <button class="btn" data-next="d9">DOOR 08 COMPLETE ✓ →</button>
+</div></section>
+
+<section class="scene" id="d9"><div class="wrap center"><div class="kicker">DOOR 09</div><h1 class="big">...</h1><p class="sub">wrong door.</p>
+ <div class="escapeRoom">
+  <button class="obj fork" id="forkObj">🍴</button><button class="obj art" id="artObj">AAHT</button><button class="obj alarm" id="alarmObj">6:30</button><button class="obj phone" id="phoneObj">☎️</button><button class="obj ropeObj" id="ropeObj">🎟️</button><button class="obj computer" id="spellObj">💻</button>
+  <span class="scratched s1">★</span><span class="scratched s2">♡</span><span class="scratched s3">X</span>
+  <div class="lockbox"><div style="font-size:.72rem;margin-bottom:6px">LOCKBOX</div><button class="btn dark sym">★</button><button class="btn dark sym">♡</button><button class="btn dark sym">X</button></div>
+  <div class="inv" id="inv">INVENTORY: empty</div>
+ </div>
+ <div id="escapeActions"><button class="btn dark" id="backBtn">← GO BACK</button></div>
+</div></section>
+
+<section class="scene" id="speed"><div class="elevatorCab" id="elevatorCab"><div class="elevTop"><div class="floorDisplay" id="floorDisplay">09</div></div><div class="elevWindow" id="elevWindow"></div><div class="elevDoors" id="elevDoors"></div><div class="elevCaption" id="elevCaption">PLEASE STAND CLEAR OF THE DOORS.</div></div></section>
+
+<section class="scene" id="d19"><div class="wrap bossbox">
+ <div id="bossScary"><div class="kicker">DOOR 19</div><h1 class="big">⚠ FINAL BOSS ⚠</h1><p class="sub">The following challenge has been classified as <b>EXTREMELY DIFFICULT</b>.</p>
+ <div class="terminal" style="margin-top:25px;text-align:left">checking player status............. ✓<br>checking inventory................. ✓<br>fork............................... ✓<br>checking mental preparedness........ ?<br>checking boyfriend credentials...... ✓<br><br>PLAYER: JACKSON<br>ATTEMPTS REMAINING: 1<br>DIFFICULTY: NIGHTMARE<br>BOSS: [REDACTED]</div>
+ <button class="btn red" id="enterBoss">ENTER FINAL BOSS</button></div>
+ <div id="cuteBoss" class="cuteBoss hidden"><div class="catFace" id="bossCat">🐱</div><div class="doodle">hai jackson :3</div><h2>what time was jayleigh born :3???</h2><input id="birthTime" placeholder="__:__ _M" autocomplete="off" />
+  <div class="confirmStage">
+    <div class="scribble topDoodle">OMG IS THAT A CONFIRM BUTTON??? ↓↓↓</div>
+    <div class="confirmRow"><div class="scribble sideDoodle leftDoodle">!!!<br>NO WAY</div><button class="btn pink" id="confirmBirth">CONFIRM</button><div class="scribble sideDoodle rightDoodle">IT'S REAL<br>!!!</div></div>
+    <div class="scribble bottomDoodle">↑↑↑ CONFIRM BUTTON SPOTTED ↑↑↑</div>
+  </div>
+  <div id="bossMsg" style="font-weight:800;min-height:30px"></div>
+ </div>
+</div></section>
+
+<section class="scene" id="d20"><div class="wrap center">
+ <div class="kicker">DOOR 20</div><h1 class="big">happy 20th birthday,<br>jackson. ♡</h1><p class="sub">you made it.</p>
+ <button class="btn" id="openFinal">OPEN THE LAST DOOR</button>
+ <div id="finalInside" class="hidden">
+  <div class="paper" style="max-width:760px;margin:32px auto;text-align:left"><div class="tape"></div><h2>20.</h2><p>you're actually ancient now. sorry you had to find out like this.</p><p>i kept seeing those stupid digital birthday gifts everywhere and thought they were really cute. then i found out they cost money.</p><p>so obviously instead of behaving like a normal person, i decided i'd make you an entire fucking website.</p><p class="doodle">reasonable response</p><p>and somehow it turned into... whatever the fuck all of that was.</p><p class="doodle">← password interrogation &nbsp; ← red carpet &nbsp; ← imprisonment &nbsp; ← final boss cat &nbsp; ← THE CONFIRM BUTTON</p></div>
+  <h2>20 things that make me think of you</h2><p class="sub">apparently you've infected my brain because now completely normal things make me think of you.</p>
+  <button class="btn dark" id="memoryNext">NEXT THING</button><div class="memorycloud" id="memorycloud"></div>
+  <div id="twentyEnd" class="hidden"><h2 class="big" style="font-size:clamp(2.5rem,10vw,6rem)">YOUUUUUU ♡</h2><p class="sub">mostly you.<br>it's weird how many completely ordinary things have started reminding me of you.</p>
+   <div class="envelope">✉️</div><h2>one last thing.</h2><button class="btn" id="openLetter">OPEN LETTER</button>
+   <div class="letter hidden" id="letter"><h2>for jackson ♡</h2><p>happy 20th birthday.</p><p>i hope you know how much i appreciate every stupid little thing that's somehow become ours — every call, every joke that makes absolutely no sense to anyone else, every game, every message, every tiny thing i end up remembering.</p><p>you've made a lot of completely ordinary days feel really important to me, and i'm very glad that on 1 august i clicked one stupid roblox room and ended up meeting you.</p><p>i hope this year gives you so many reasons to laugh, draw concerningly well on gartic phone, butcher the spelling of basic words, and keep being exactly the person i've gotten so attached to.</p><p>happy birthday, loser. ♡</p><p class="doodle">— jaye</p></div>
+   <button class="btn hidden" id="finishBtn">FINISH</button>
+  </div>
+ </div>
+</div></section>
+
+<section class="scene bonus" id="bonus"><div class="wrap center" style="padding-top:12vh"><div class="kicker" style="color:#6a6470">SECRET DOOR</div><h1 class="big">CAT ROOM.</h1><div style="font-size:8rem">🐈</div><p class="sub" style="color:#5c5661">congratulations. you found all five cats and your reward is absolutely nothing useful.</p><button class="btn pink" id="catParty">INITIATE CAT PARTY</button><div id="bonusText"></div></div></section>
+
+<script>
+const avatar='data:image/png;base64,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';
+let current='lock', cats=new Set(), audioCtx=null, unlocked=false, forkOwned=false, keyOwned=false, lockSeq=[];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function tone(freq=520,dur=.08,type='sine',gain=.08){try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(gain,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur)}catch(e){}}
+function bloop(){tone(660,.07,'sine',.06);setTimeout(()=>tone(880,.09,'sine',.04),55)}
+function camera(){tone(150,.04,'square',.05);setTimeout(()=>tone(90,.05,'square',.04),35);$('#flash').classList.remove('go');void $('#flash').offsetWidth;$('#flash').classList.add('go')}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
+function show(id){$$('.scene').forEach(sc=>sc.classList.remove('active')); current=id; const sc=$('#'+id); if(!sc){console.error('Missing scene:',id);return;} sc.classList.add('active'); sc.classList.remove('roomArrive'); void sc.offsetWidth; if(!['lock','intro','speed','hallway'].includes(id)) sc.classList.add('roomArrive'); window.scrollTo(0,0); if(id!=='lock'&&id!=='intro'&&id!=='speed'&&id!=='hallway'){ $('#progress').classList.remove('hidden'); $('#catcount').classList.remove('hidden'); let n=id.replace('d',''); $('#progress').textContent='DOOR '+String(n).padStart(2,'0');} if(id==='d6')startCarpet(); if(id==='d7')startOfficial(); if(id==='d8')startAnalytics();}
+$$('[data-next]').forEach(b=>b.addEventListener('click',()=>walkToDoor(b.dataset.next)));
+$$('[data-cat]').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.cat;if(cats.has(n))return;cats.add(n);b.style.visibility='hidden';$('#catcount').textContent=`🐈 ${cats.size}/5`;toast(`🐈 CAT ACQUIRED — ${cats.size}/5`);tone(740,.08);if(cats.size===5)setTimeout(()=>toast('🔓 SECRET DOOR UNLOCKED'),900)}));
+// immersive hallway navigation — BUILD 3
+let hallTarget=null,hallStep=0,hallBusy=false;
+function footstep(){tone(92,.06,'triangle',.035);setTimeout(()=>tone(70,.08,'triangle',.025),70)}
+function walkToDoor(target){
+  hallTarget=target;hallStep=0;hallBusy=false;
+  $('#'+current)?.classList.remove('active');current='hallway';$('#hallway').classList.add('active');
+  const h=$('#hall');h.className='hall';h.style.setProperty('--walk',0);
+  $('#hallDoorNum').textContent=String(target.replace('d','')).padStart(2,'0');$('#hallName').textContent='DOOR '+String(target.replace('d','')).padStart(2,'0');
+  $$('.hallStepDots span').forEach(x=>x.classList.remove('on'));
+}
+function hallAdvance(){
+  if(current!=='hallway'||hallBusy)return;
+  hallStep=Math.min(7,hallStep+1);footstep();const h=$('#hall');h.style.setProperty('--walk',hallStep);h.classList.remove('walkPulse');void h.offsetWidth;h.classList.add('walkPulse');
+  $$('.hallStepDots span').forEach((x,i)=>x.classList.toggle('on',i<hallStep));
+  if(hallStep>=7){hallBusy=true;setTimeout(()=>{h.classList.add('open');tone(155,.55,'sawtooth',.03);setTimeout(()=>{h.classList.add('entering');$('#transitionCurtain').classList.add('on');setTimeout(()=>{show(hallTarget);h.className='hall';h.style.setProperty('--walk',0);$('#transitionCurtain').classList.remove('on')},760)},560)},260)}
+}
+$('#hallway').addEventListener('click',hallAdvance);
+window.addEventListener('keydown',e=>{if(current==='hallway'&&(e.key==='w'||e.key==='W'||e.key==='ArrowUp')){e.preventDefault();hallAdvance()}});
+// subtle ambient dust
+(()=>{const d=$('#ambientDust');for(let i=0;i<34;i++){const p=document.createElement('i');p.style.setProperty('--x',Math.random()*100+'%');p.style.setProperty('--dx',(Math.random()*120-60)+'px');p.style.setProperty('--t',(9+Math.random()*16)+'s');p.style.animationDelay=(-Math.random()*20)+'s';d.appendChild(p)}})();
+// lock
+const wrongs=['NUH UHHH','NOT QUITE','CLOSE THOUGH','jackson please.','WRONG ❌','interesting guess.','try that again buddy','embarrassing.','you know this.','💀'];
+function wrongPop(){const p=document.createElement('div');p.className='lockpop';p.textContent=wrongs[Math.floor(Math.random()*wrongs.length)];p.style.left=(8+Math.random()*72)+'vw';p.style.top=(10+Math.random()*70)+'vh';p.style.setProperty('--r',(Math.random()*12-6)+'deg');document.body.appendChild(p);tone(180,.09,'square',.05);setTimeout(()=>p.remove(),1700)}
+function tryUnlock(){const v=$('#password').value.trim().toLowerCase(); if(v==='nigga'){unlocked=true;$('#unlockBtn').disabled=true;$('#password').disabled=true;const box=$('.lockbox');box.innerHTML='<div class="big" style="font-size:3rem">WAIT—</div>';setTimeout(()=>box.innerHTML='<div class="big" style="font-size:3rem">THAT’S IT</div>',700);setTimeout(()=>box.innerHTML='<div class="big" style="font-size:3rem">🔓 UNLOCKED</div>',1400);setTimeout(()=>show('musicSelect'),2200)} else wrongPop()}
+$('#unlockBtn').onclick=tryUnlock;$('#password').addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock()});
+// soundtrack player — official Spotify embeds; stays mounted while scenes change
+const soundtrackSongs={
+  lovers:{title:'Lovers Rock',artist:'TV Girl',id:'6dBUzqjtbnIa1TwYbyw5CM'},
+  iloveyou:{title:'I Love You',artist:'Fontaines D.C.',id:'2rDaHAwvDFpSR6hta7re5l'},
+  star:{title:'Star Shopping',artist:'Lil Peep',id:'1WbhIxkn5ECsOwUm795iX1'}
+};
+let currentSong='none';
+function setSoundtrack(key,goIntro=false){
+  const dock=$('#musicDock'),wrap=$('#spotifyFrameWrap'),disc=$('#musicDisc');
+  dock.classList.add('visible'); currentSong=key;
+  if(key==='none'){
+    $('#musicTitle').textContent='no music';$('#musicArtist').textContent='quiet mode';disc.classList.remove('spin');wrap.innerHTML='';
+  }else{
+    const s=soundtrackSongs[key];$('#musicTitle').textContent=s.title;$('#musicArtist').textContent=s.artist;disc.classList.add('spin');
+    wrap.innerHTML=`<iframe id="spotifyFrame" title="${s.title} — ${s.artist}" src="https://open.spotify.com/embed/track/${s.id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+  }
+  $('#musicDrawer').classList.remove('open');
+  if(goIntro)setTimeout(()=>show('intro'),250);
+}
+$('#musicToggle').onclick=()=>$('#musicDrawer').classList.toggle('open');
+$$('[data-song]').forEach(b=>b.addEventListener('click',()=>setSoundtrack(b.dataset.song,b.closest('#musicSelect')!==null)));
+$('#noMusicStart').onclick=()=>setSoundtrack('none',true);
+
+// intro notifications — BUILD 3: reader-controlled, no auto-disappearing messages
+$('#introStart').onclick=()=>{
+  $('#introStart').remove();
+  const msgs=['jackson?','oh good you\'re here','HAPPY BIRTHDAY LOSER','i made you something :)','you better like it i literally learnt how to make a website for you','because all of the stupid tiktok idea websites cost money so i pulled this out my ass'];
+  let i=0; const stage=$('#notifStage'), archive=$('#introArchive');
+  function showMsg(){
+    stage.innerHTML='';
+    if(i>=msgs.length){const done=document.createElement('div');done.className='discordToast';done.innerHTML=`<img class="avatar" src="${avatar}"><div><strong>j</strong><p>alright. go find your present.</p></div><div class="notifControls"><button class="btn" id="introDone">GO FIND YOUR PRESENT →</button></div>`;stage.appendChild(done);bloop();$('#introDone').onclick=()=>walkToDoor('d1');return}
+    const msg=msgs[i]; const n=document.createElement('div');n.className='discordToast';
+    n.innerHTML=`<img class="avatar" src="${avatar}"><div><strong>j</strong><p>${msg}</p></div><div class="notifControls"><button class="btn dark" id="readNext" disabled>READING…</button></div>`;
+    stage.appendChild(n);bloop();
+    const line=document.createElement('div');line.className='archiveLine';line.textContent='j  •  '+msg;archive.appendChild(line);
+    const wait=Math.max(5000,Math.min(9000,3200+msg.length*55));
+    setTimeout(()=>{const b=$('#readNext');if(!b)return;b.disabled=false;b.textContent=i===msgs.length-1?'CONTINUE':'NEXT MESSAGE';b.onclick=()=>{i++;showMsg()}},wait);
+  }
+  showMsg();
+};
+$('#joinBtn').onclick=()=>{$('#joinBtn').disabled=true;$('#joinBtn').textContent='joining room...';tone(420,.08);setTimeout(()=>$('#originText').classList.remove('hidden'),900)};
+$('#forkReveal').onclick=()=>{$('#forkText').classList.toggle('hidden');tone(500,.06)};
+$('#voiceTest').onclick=()=>{const r=$('#voiceResult');r.textContent=' testing...';setTimeout(()=>r.textContent=' testi—',600);setTimeout(()=>{r.textContent=' ⚠ CRITICAL VOICE CRACK — j: HAHAHAHAHAHAHA';tone(260,.1,'square')},1100)};
+// door5 folds
+$$('.fold').forEach(f=>f.onclick=()=>{f.classList.add('open');if($$('.fold.open').length===5)$('#rememberEnd').classList.remove('hidden')});
+// carpet
+function startCarpet(){let n=3;$('#countdown').textContent=n;const t=setInterval(()=>{n--;if(n>0){$('#countdown').textContent=n;camera()}else{clearInterval(t);$('#countdown').textContent='STEAL THE SHOW.';camera();setTimeout(()=>{$('#countdown').classList.add('hidden');$('#carpetStage').classList.remove('hidden')},650)}},650)}
+function pap(text,x,y){const p=document.createElement('div');p.className='papBubble';p.textContent=text;p.style.left=x+'%';p.style.top=y+'%';p.style.setProperty('--r',(Math.random()*12-6)+'deg');document.body.appendChild(p);setTimeout(()=>p.remove(),2200)}
+$('#walkCarpet').onclick=()=>{
+  const st=$('#carpetStage');st.classList.add('walk1'); camera();pap('JACKSON! OVER HERE!',4,20);pap('LOOK AT THE CAMERA!',70,28);
+  $('#carpetActions').innerHTML='<p class="sub"><b>GET READY.</b></p><button class="btn red" id="pose1">I\'M READY</button>';
+  $('#walkCarpet').remove();
+  $('#pose1').onclick=()=>{camera();st.classList.remove('walk1');st.classList.add('walk2');pap('ONE MORE!',9,62);pap('GET CLOSER!',72,58);$('#carpetActions').innerHTML='<p class="sub">LOOKING GOOD. KEEP MOVING.</p><button class="btn red" id="pose2">TAKE PHOTO</button>';
+    $('#pose2').onclick=()=>{camera();st.classList.remove('walk2');st.classList.add('walk3');setTimeout(()=>{camera();pap('WAIT—',12,31);$('#carpetActions').innerHTML='<p class="sub">WAIT.<br><b>JAYE ISN\'T READY.</b><br>...okay now she is.</p><button class="btn red" id="steal">STEAL THE SHOW</button>';
+      $('#steal').onclick=()=>{for(let i=0;i<9;i++)setTimeout(()=>{camera();if(i%2===0)pap(['ABSOLUTE SCENES','THIS WAY!','ONE LAST PHOTO!'][i%3],Math.random()*76,18+Math.random()*58)},i*150);$('#redWords').innerHTML='<b>THE CROWD IS LOSING IT • SHOW SUCCESSFULLY STOLEN ✓</b>';setTimeout(()=>fakeJNotif(),1400)};
+    },350)};
+  };
+};
+function fakeJNotif(){const n=document.createElement('div');n.className='notif';n.innerHTML=`<img class="avatar" src="${avatar}"><div><strong>j</strong><p>we're so fucking cool</p></div>`;document.body.appendChild(n);setTimeout(()=>{n.classList.add('show');bloop()},30);setTimeout(()=>{n.classList.remove('show');setTimeout(()=>n.remove(),450);$('#carpetActions').innerHTML='<div class="paper" style="max-width:560px;margin:28px auto"><p>we joke about walking the red carpet together all the time.</p><p><b>but i\'d actually really like to someday.</b></p><p class="doodle">so consider this our practice run. ♡</p></div><button class="btn" id="leaveCarpet">LEAVE THE RED CARPET →</button>';$('#leaveCarpet').onclick=()=>walkToDoor('d7')},4200)}
+// official
+function startOfficial(){setTimeout(()=>{$('#officialLoading').classList.add('hidden');$('#officialYes').classList.remove('hidden');tone(760,.1);setTimeout(()=>$('#officialSweet').classList.remove('hidden'),900)},1500)}
+// analytics
+function daysSince(y,m,d){const start=new Date(y,m-1,d);const now=new Date();return Math.max(0,Math.floor((now-start)/86400000))+' DAYS'}
+function startAnalytics(){$('#metDays').textContent=daysSince(2026,8,1);$('#officialDays').textContent=daysSince(2026,9,1);let n=0,steps=[10,57,218,684,1204,2738,9482];const iv=setInterval(()=>{n++;$('#tiktoks').textContent=steps[Math.min(n-1,steps.length-1)].toLocaleString();if(n>=steps.length){clearInterval(iv);$('#tiknote').textContent='CALCULATION ABORTED — this is fucking ridiculous.'}},180)}
+$('#wakeBtn').onclick=()=>{const a=['WAKE UP','WAKE UP','JACKSON','YOU HAVE WORK','REQUEST SNOOZE? +10 MINUTES','REQUEST DENIED.'];let i=0;$('#wakeText').textContent=a[i++];const iv=setInterval(()=>{if(i>=a.length)return clearInterval(iv);$('#wakeText').textContent=a[i++];tone(520,.05,'square')},450)};
+$('#procBtn').onclick=()=>$('#procList').classList.toggle('hidden');
+// escape room
+$('#forkObj').onclick=()=>{forkOwned=true;$('#inv').textContent='INVENTORY: 🍴 FORK';toast('ITEM ACQUIRED: FORK — usefulness: ?????')};
+let artClicks=0;$('#artObj').onclick=()=>{artClicks++;toast(['a beautiful piece of aaht.','still aaht.','what exactly are you expecting to happen here'][Math.min(artClicks-1,2)])};
+let alarmClicks=0;$('#alarmObj').onclick=()=>{const a=['WAKE UP JACKSON','WAKE UP','YOU HAVE WORK','NO YOU CANNOT HAVE TEN MORE MINUTES'];toast(a[Math.min(alarmClicks++,3)]);tone(610,.1,'square')};
+$('#phoneObj').onclick=()=>{toast('NOVEMBER');setTimeout(()=>toast('OCTOBER'),800);setTimeout(()=>toast('TRANSMISSION COMPLETE.'),1600)};
+$('#ropeObj').onclick=()=>toast('the red carpet budget ran out.');
+$('#spellObj').onclick=()=>{const a=prompt('Please spell: necessary');if(a!==null)toast("❌ INCORRECT — we're gonna be here all fucking day.")};
+$('#backBtn').onclick=()=>toast('door is locked. still locked. jackson i don\'t know what you want me to do about it');
+$$('.sym').forEach(b=>b.onclick=()=>{lockSeq.push(b.textContent);if(lockSeq.length===3){if(lockSeq.join('')==='★♡X'){keyOwned=true;toast('🔑 SUSPICIOUSLY CONVENIENT KEY');$('#inv').textContent=(forkOwned?'INVENTORY: 🍴 FORK + ':'INVENTORY: ')+'🔑 KEY';$('#escapeActions').innerHTML='<button class="btn" id="useKey">USE SUSPICIOUSLY CONVENIENT KEY?</button>';$('#useKey').onclick=()=>escapeWin()}else{toast('nope.');lockSeq=[]}}});
+function escapeWin(){$('#escapeActions').innerHTML='<div class="paper" style="max-width:620px;margin:20px auto"><h2>CONGRATULATIONS!</h2><p>you escaped a room that had absolutely no reason to exist.</p><p><b>ITEMS COLLECTED:</b> '+(forkOwned?'🍴 Fork':'none')+'<br><b>USEFUL ITEMS COLLECTED:</b> 0</p><p class="doodle">why did this room exist? — jaye thought it would be funny ✓</p></div><button class="btn" id="speedGo">PLEASE LET ME OUT →</button>';$('#speedGo').onclick=startSpeed}
+// speed
+function startSpeed(){
+  show('speed');$('#progress').classList.add('hidden');$('#catcount').classList.add('hidden');
+  const cab=$('#elevatorCab'),doors=$('#elevDoors'),display=$('#floorDisplay'),win=$('#elevWindow'),cap=$('#elevCaption');
+  win.innerHTML='';doors.classList.add('open');cap.textContent='oh good. an elevator.';
+  setTimeout(()=>{doors.classList.remove('open');tone(210,.22,'sine',.05);cap.textContent='going to door 10... probably.'},1000);
+  setTimeout(()=>{cab.classList.add('elevShake');cap.textContent='WAIT.';tone(95,.35,'sawtooth',.05)},2100);
+  const nums=[10,11,12,13,14,15,16,17,18], reasons=['couldn\'t be bothered','budget cuts','genuinely no idea','unlucky number','nothing happened here','lost the key','jackson would\'ve taken too long','classified','we overshot it'];
+  let i=0;
+  function fly(){
+    if(i>=nums.length){cab.classList.remove('elevShake');display.textContent='19';cap.textContent='...right. we\'re here.';tone(760,.12);setTimeout(()=>{
+      doors.classList.add('open');
+      win.innerHTML='<div style="position:absolute;inset:0;display:grid;place-items:center;background:#08090a"><div class="hallDoor" style="position:relative;left:auto;top:auto;transform:none"><div class="hallDoorFrame"></div><div class="hallDoorLeaf"><div class="hallDoorNum">19</div></div></div></div>';
+      setTimeout(()=>{
+        cap.innerHTML='9 ROOMS SKIPPED SUCCESSFULLY ✓<br><span style="font-weight:500">INVENTORY: 🍴 somehow still here.</span><br><button class="btn" id="open19" style="margin-top:10px">STEP OUT →</button>';
+        const open19=$('#open19');
+        if(open19) open19.onclick=()=>{
+          // Hard transition out of the elevator. This avoids the old hallway-state deadlock after the skip cutscene.
+          clearInterval(window.elevTimer);
+          $('#transitionCurtain').classList.add('on');
+          setTimeout(()=>{
+            show('d19');
+            $('#transitionCurtain').classList.remove('on');
+          },520);
+        };
+      },800);
+    },700);return;
+    }
+    const n=nums[i];display.textContent=String(n).padStart(2,'0');cap.textContent=(n===10?'JACKSON HOLD ON — ':'')+'DOOR '+n+' SKIPPED — '+reasons[i];
+    const d=document.createElement('div');d.className='shaftDoor';d.style.top='110%';d.innerHTML='<div style="position:absolute;top:25px;left:0;right:0;text-align:center;font-family:monospace;font-weight:900">DOOR '+n+'</div>';win.appendChild(d);
+    requestAnimationFrame(()=>{d.style.transition='.34s linear';d.style.top='-340px'});setTimeout(()=>d.remove(),500);camera();i++;setTimeout(fly,420);
+  }
+  setTimeout(fly,2900);
+}
+// boss
+function elevator(start=true){if(!start)return;audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();let seq=[523,659,784,659],idx=0;window.elevTimer=setInterval(()=>tone(seq[idx++%seq.length],.18,'sine',.025),260)}
+$('#enterBoss').onclick=()=>{const b=$('#bossScary');b.innerHTML='<div class="center" style="padding-top:18vh"><div class="kicker">FINAL BOSS INITIALISING</div><h1 class="big" id="fightCount">3</h1><p class="sub">do not panic.</p></div>';let n=3;const iv=setInterval(()=>{n--;if(n>0){$('#fightCount').textContent=n;tone(120,.12,'square',.05)}else{clearInterval(iv);$('#fightCount').textContent='FIGHT.';tone(70,.4,'sawtooth',.08);setTimeout(()=>{b.classList.add('hidden');$('#cuteBoss').classList.remove('hidden');elevator(true)},900)}},850)};
+let wrongBoss=0;$('#confirmBirth').onclick=()=>{let v=$('#birthTime').value.toLowerCase().replace(/\s|\./g,'').replace(/^0/,'');let good=['9:08am','9:08','908am','908'].includes(v);if(good){clearInterval(window.elevTimer);$('#bossCat').textContent='😺';$('#bossMsg').innerHTML='<div class="big" style="font-size:2.8rem">CONFIRMED!!!!!</div><div>FINAL BOSS DEFEATED ✓<br>SCORE: 100000000<br>DAMAGE DEALT: 908<br>FORKS USED: 0</div>';for(let i=0;i<18;i++)setTimeout(()=>confetti(),i*80);setTimeout(()=>{$('#cuteBoss').innerHTML='<div class="catFace">🐱</div><h2>bye jackson :3</h2>';setTimeout(()=>{$('#d19 .wrap').innerHTML='<div class="center" style="padding-top:25vh"><h1 class="big">20</h1><p class="sub">one more.</p><button class="btn" id="to20">OPEN THE LAST DOOR</button></div>';$('#to20').onclick=()=>walkToDoor('d20')},1200)},2400)}else{wrongBoss++;$('#bossCat').textContent=['😿','🙀','😾'][Math.min(wrongBoss-1,2)];$('#bossMsg').textContent=['CONFIRMATION FAILED :( — the kitty is disappointed in u.','think harder boyfriend','jayleigh is judging you rn.'][Math.min(wrongBoss-1,2)]}};
+function confetti(){const s=document.createElement('span');s.textContent=['♡','★','✦','🐈'][Math.floor(Math.random()*4)];s.style.position='fixed';s.style.left=Math.random()*100+'vw';s.style.top='-30px';s.style.zIndex=100;s.style.fontSize=(1+Math.random()*1.4)+'rem';s.style.transition='2s linear';document.body.appendChild(s);requestAnimationFrame(()=>s.style.transform=`translateY(110vh) rotate(${Math.random()*540}deg)`);setTimeout(()=>s.remove(),2200)}
+// final
+$('#openFinal').onclick=()=>{$('#openFinal').classList.add('hidden');$('#finalInside').classList.remove('hidden')};
+const memories=[
+['01','freckles','• • •'],['02','doors','🚪'],['03','sunsets / sunrises','🌅'],['04','lil peep','🎧'],['05','lightning mcqueen','🏎️'],['67','SIXSEVEENNNNNNN','!!!!!!!'],['08','beaches','🌊'],['09','spring rolls','🥟'],['10','coffee','☕'],['11','rain','🌧️'],['12','beanies','🧢'],['13','that stupid lipbite you do','you know EXACTLY what i\'m talking about.'],['14','polaroids','📸'],['15','the colour blue','BLUE'],['16','graffiti','✎'],['17','X','X'],['18','Beta Squad','▶'],['19','wind','〰']];
+let mi=0;$('#memoryNext').onclick=()=>{if(mi>=memories.length)return;const [n,t,icon]=memories[mi++];if(n==='67'){camera();tone(150,.15,'sawtooth',.08)}const el=document.createElement('div');el.className='memoryItem';el.style.setProperty('--r',(Math.random()*12-6)+'deg');el.style.left=(4+Math.random()*70)+'%';el.style.top=(5+Math.random()*78)+'%';el.innerHTML=`<small>${n}</small><br>${t}<br><span style="font-size:1.6rem">${icon}</span>`;$('#memorycloud').appendChild(el);if(t==='rain'){for(let i=0;i<12;i++)setTimeout(()=>confetti(),i*90)}if(mi===memories.length){$('#memoryNext').textContent='20 — ?';$('#memoryNext').onclick=()=>{$('#memoryNext').remove();$('#twentyEnd').classList.remove('hidden')}}};
+$('#openLetter').onclick=()=>{$('#letter').classList.remove('hidden');$('#openLetter').classList.add('hidden');$('#finishBtn').classList.remove('hidden')};
+const bonusHTML=`<section class="scene active bonus" style="display:flex;align-items:center;justify-content:center;text-align:center"><div><div class="kicker" style="color:#6a6470">SECRET DOOR</div><h1 class="big">CAT ROOM.</h1><div style="font-size:8rem">🐈</div><p style="color:#5c5661">congratulations. you found all five cats and your reward is absolutely nothing useful.</p><button class="btn pink" id="catPartyFinal">INITIATE CAT PARTY</button></div></section>`;
+function launchCatParty(){for(let i=0;i<40;i++){let c=document.createElement('div');c.className='catRain';c.textContent='🐈';c.style.left=Math.random()*100+'vw';c.style.animationDuration=(2+Math.random()*3)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),5200)}}
+$('#finishBtn').onclick=()=>{
+  document.body.innerHTML='<section class="scene active" style="display:flex;align-items:center;justify-content:center;text-align:center"><div><h1 class="big">HAPPY BIRTHDAY JACKSON ♡</h1><p class="sub">20 YEARS SURVIVED ✓<br>FINAL DOOR COMPLETE ✓<br>WEBSITE COMPLETE ✓</p><button class="btn" id="realFinish">FINISH</button></div></section>';
+  $('#realFinish').onclick=()=>{
+    document.body.innerHTML='<section class="scene active" id="fakeEnd" style="display:flex;align-items:center;justify-content:center;text-align:center"><div><p class="sub">thanks for playing :)</p><div id="meow" class="hidden"><div style="font-size:3rem">🐈</div><h2>WAIT.</h2><p>🐈 5/5<br>SECRET REQUIREMENT COMPLETE.</p><button class="btn" id="bonusBtn">???</button></div></div></section>';
+    setTimeout(()=>{
+      const m=document.querySelector('#meow');
+      if(cats.size===5){m.classList.remove('hidden');tone(680,.08);$('#bonusBtn').onclick=()=>{document.body.innerHTML=bonusHTML;$('#catPartyFinal').onclick=launchCatParty};}
+    },3000);
+  };
+};
+</script>
+</body>
+</html>
